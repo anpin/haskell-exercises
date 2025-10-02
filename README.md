@@ -1,5 +1,18 @@
 # exercises
 
+Getting ready for a Haskell interview with my F# and Nix background 
+
+TODO: 
+- [x] syntax comparision 
+- [x] devenv / be able to run helloworld
+- [ ] simple fizzbuzz or other leet code type of problem 
+- [ ] simple full-stack crud app in Haskell 
+- [ ] simple cordana smart-contract app, e.g. flight booking
+
+
+
+
+# README
 Get a Haskell development environment up and running quickly. Thanks to Nix, this template is optimized for a fully reproducible and friendly development environment. It is based on:
 
 - [Nix](https://srid.ca/haskell-nix) + [Flakes](https://serokell.io/blog/practical-nix-flakes) (via [`github:srid/haskell-flake`](https://github.com/srid/haskell-flake)) + GHC 9.6
