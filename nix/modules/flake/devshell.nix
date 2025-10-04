@@ -26,6 +26,7 @@
         ghciwatch
         windsurf
         nil
+        nixfmt-rfc-style
       ];
     };
   };
