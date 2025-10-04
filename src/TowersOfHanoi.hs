@@ -12,3 +12,5 @@ hanoi n src dst aux =
       hanoi (n - 1) src aux dst -- move n-1 disks from src to aux
         <> [(src, dst)] -- move the largest disk from src to dst
         <> hanoi (n - 1) aux dst src -- move n-1 disks from aux to dst
+        -- <> in haskell is the same as F# ++
+        -- in this case it concatenates the list of moves returned by a recursive call
