@@ -69,6 +69,7 @@ library
   hs-source-dirs:  src
   exposed-modules:
     CreditCard
+    FizzBuzz
     TowersOfHanoi
 
 executable exercises
@@ -84,6 +85,7 @@ test-suite exercises-test
   main-is:        Spec.hs
   other-modules:
     CreditCardSpec
+    FizzBuzzSpec
     TowersOfHanoiSpec
 
   build-depends:
