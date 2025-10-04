@@ -12,4 +12,12 @@ repl *ARGS:
 
 # Run ghcid -- auto-recompile and run `main` function
 run *ARGS:
-    ghcid -T ':main {{ ARGS }}' 2>&1 | cat
+    ghcid --command="cabal repl exe:exercises" -T ':main {{ ARGS }}' 2>&1 | cat
+
+# Run tests
+test:
+    cabal test --test-show-details=direct
+
+# Run tests in watch mode with ghcid
+test-watch:
+    ghcid --command="cabal repl exercises-test" --test=":main"

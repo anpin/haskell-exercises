@@ -16,6 +16,8 @@
         inherit root;
         fileset = lib.fileset.unions [
           (root + /src)
+          (root + /app)
+          (root + /test)
           (root + /exercises.cabal)
           (root + /LICENSE)
           (root + /README.md)
@@ -33,6 +35,7 @@
         aeson.source = "1.5.0.0" # Hackage version
         shower.source = inputs.shower; # Flake input
         */
+        # cabal-gild
       };
 
       # Add your package overrides here

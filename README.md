@@ -9,7 +9,9 @@ TODO:
 - [ ] simple full-stack crud app in Haskell 
 - [ ] simple cordana smart-contract app, e.g. flight booking
 
-
+Learning material: 
+- Reading and homework: https://www.seas.upenn.edu/~cis1940/spring13/lectures.html
+- notes : https://anpin.fyi/blog/fsharp-vs-haskell-syntax/
 
 
 # README
