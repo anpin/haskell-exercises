@@ -67,7 +67,9 @@ common shared
 library
   import:          shared
   hs-source-dirs:  src
-  exposed-modules: CreditCard
+  exposed-modules:
+    CreditCard
+    TowersOfHanoi
 
 executable exercises
   import:         shared
@@ -80,7 +82,10 @@ test-suite exercises-test
   type:           exitcode-stdio-1.0
   hs-source-dirs: test
   main-is:        Spec.hs
-  other-modules:  CreditCardSpec
+  other-modules:
+    CreditCardSpec
+    TowersOfHanoiSpec
+
   build-depends:
     , exercises
     , hspec      ^>=2.11
