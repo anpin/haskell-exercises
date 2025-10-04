@@ -22,3 +22,5 @@ jobs:
         run: om ci
       - name: What GHC version?
         run: nix develop -c ghc --version
+      - name: Run exercises
+        run: nix run .\#exercises -- -v
