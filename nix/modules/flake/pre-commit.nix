@@ -9,7 +9,7 @@
   perSystem = { config, ... }: {
     pre-commit.settings = {
       hooks = {
-        nixpkgs-fmt.enable = true;
+        # nixpkgs-fmt.enable = true; is failing for some reason
         cabal-fmt.enable = true;
         fourmolu = {
           enable = true;

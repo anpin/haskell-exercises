@@ -3,10 +3,10 @@ name:               exercises
 version:            0.1.0.0
 license:            MIT
 copyright:          2022 Pavel Anpin
-maintainer:         srid@srid.ca
+maintainer:         pavel@anpin.fyi
 author:             Pavel Anpin
 category:           Web
-homepage:           https://srid.ca/exercises
+homepage:           https://anpin.fyi
 
 -- TODO: Before hackage release.
 -- A short (one-line) description of the package.
@@ -64,5 +64,6 @@ common shared
   default-language:   GHC2021
 
 executable exercises
-  import:  shared
-  main-is: Main.hs
+  import:        shared
+  build-depends: vector ^>=0.13.2.0
+  main-is:       Main.hs

@@ -17,6 +17,5 @@
     # cf. https://nixos-unified.org/autowiring.html#flake-parts
     #
     # To write your own Nix, add or edit files in ./nix/modules/flake/
-    inputs.nixos-unified.lib.mkFlake
-      { inherit inputs; root = ./.; };
+    inputs.nixos-unified.lib.mkFlake { inherit inputs; root = ./.;  };
 }

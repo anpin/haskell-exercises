@@ -11,5 +11,5 @@ repl *ARGS:
     cabal repl {{ ARGS }}
 
 # Run ghcid -- auto-recompile and run `main` function
-run:
-    ghcid -T :main
+run *ARGS:
+    ghcid -T ':main {{ ARGS }}' 2>&1 | cat

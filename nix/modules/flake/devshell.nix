@@ -1,9 +1,14 @@
 # Configuration for the project's Nix devShell
 # You mostly want the `packages` option below.
-
+{ inputs, ...}:
 {
-  perSystem = { config, pkgs, ... }: {
+  perSystem = { config, pkgs, system, ... }: {
     # Default shell.
+    _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              config = { allowUnfree = true; cudaSupport = true;  };
+          };
+
     devShells.default = pkgs.mkShell {
       name = "exercises";
       meta.description = "Haskell development environment";
@@ -19,6 +24,7 @@
         just
         nixd
         ghciwatch
+        windsurf
       ];
     };
   };
