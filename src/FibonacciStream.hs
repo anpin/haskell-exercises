@@ -11,7 +11,7 @@ module FibonacciStream (
   streamTakeN,
 ) where
 
--- import Text.Show qualified -- see migration guide #6 https://hackage.haskell.org/package/relude
+import Text.Show qualified -- see migration guide #6 https://hackage.haskell.org/package/relude
 
 {-
  data is like a record type in F#,
@@ -19,15 +19,20 @@ module FibonacciStream (
  this below is a recusrive type definition
  in F# you could write this as
  type Stream<'a> = Cons of 'a * Lazy<Stream<'a>>
+
+ **~** is a lazy evaluation operator
+ this project has StrictData extension enabled, so all fields are strict by default
+ so we need to use **~** to make the second field lazy
+ it is the oposite of default **!** bang opertor to make something strict
 -}
 
-data Stream a = Cons a (Stream a)
+data Stream a = Cons a ~(Stream a)
 
 {-
     below is similr to F# SRTP member function or an interface
 -}
--- instance (Show a) => Show (Stream a) where
---     show s = "Stream [" ++ show (streamTakeN 10 s) ++ "...]"
+instance (Show a) => Show (Stream a) where
+  show s = "Stream [" ++ show (streamTakeN 10 s) ++ "...]"
 
 -- instance Num (Stream Integer) where
 --     fromInteger n = streamRepeat n
@@ -41,15 +46,9 @@ data Stream a = Cons a (Stream a)
 streamToList :: Stream a -> [a]
 streamToList (Cons x xs) = x : streamToList xs
 
--- streamToList = streamTakeN (maxBound :: Int)
 streamTakeN :: Int -> Stream a -> [a]
--- streamTakeN 0 _ = []
--- streamTakeN n (Cons x xs) = x : streamTakeN (n - 1) xs
-streamTakeN n s = trace ("streamTakeN " ++ show n) (go n s)
-  where
-    go 0 _ = []
-    -- go k (Cons x xs) = x : streamTakeN (k - 1) xs
-    go k (Cons x xs) = trace ("go " ++ show k) (x : go (k - 1) xs)
+streamTakeN 0 _ = []
+streamTakeN n (Cons x xs) = x : streamTakeN (n - 1) xs
 
 streamRepeat :: a -> Stream a
 streamRepeat x = Cons x (streamRepeat x)
@@ -58,7 +57,7 @@ streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (Cons x xs) = Cons (f x) (streamMap f xs)
 streamFromSeed :: (Show a) => (a -> a) -> a -> Stream a
 streamFromSeed f x =
-  trace ("streamFromSeed " ++ show x) (Cons x (streamFromSeed f (f x)))
+  Cons x (streamFromSeed f (f x))
 
 -- infinite stream of natural numbers
 nats :: Stream Integer
