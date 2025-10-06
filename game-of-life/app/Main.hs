@@ -11,8 +11,12 @@ import Web.Hyperbole
 
 main :: IO ()
 main = do
-  run 3000 $ do
+  putStrLn $ "Listening on port: " <> show port
+  run port $ do
     liveApp quickStartDocument (runPage page)
+
+port :: Int
+port = 3000
 
 page :: (Hyperbole :> es) => Page es '[Message]
 page = do
