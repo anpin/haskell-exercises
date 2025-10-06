@@ -1,3 +1,4 @@
-packages: .
+packages:
+    ./exercises
+    ./game-of-life
 
-tests: True

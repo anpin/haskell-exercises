@@ -1,0 +1,36 @@
+diff --git a/hoogle.cabal b/hoogle.cabal
+index c5f4c39d..0ca4230f 100644
+--- a/hoogle.cabal
++++ b/hoogle.cabal
+@@ -84,6 +84,7 @@ library
+         wai-logger,
+         warp,
+         warp-tls,
++        tls,
+         zlib
+ 
+     c-sources:        cbits/text_search.c
+diff --git a/src/Input/Download.hs b/src/Input/Download.hs
+index 5d40608e..fcfda575 100644
+--- a/src/Input/Download.hs
++++ b/src/Input/Download.hs
+@@ -6,9 +6,9 @@ import System.FilePath
+ import Control.Monad.Extra
+ import System.Directory
+ import Data.Conduit.Binary (sinkFile)
+-import Data.Default.Class
+ import qualified Network.HTTP.Conduit as C
+ import Network.Connection
++import qualified Network.TLS as TLS
+ import qualified Data.Conduit as C
+ import General.Util
+ import General.Timing
+@@ -47,7 +47,7 @@ downloadFile insecure file url = do
+         settingDisableCertificateValidation = insecure,
+         settingDisableSession = False,
+         settingUseServerName = False,
+-        settingClientSupported = def
++        settingClientSupported = TLS.defaultSupported
+       }) Nothing
+     runResourceT $ do
+         response <- C.http request manager

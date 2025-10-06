@@ -1,16 +1,16 @@
-cabal-version:      2.4
-name:               exercises
-version:            0.1.0.0
-license:            MIT
-copyright:          2022 Pavel Anpin
-maintainer:         pavel@anpin.fyi
-author:             Pavel Anpin
-category:           Web
-homepage:           https://anpin.fyi
+cabal-version: 2.4
+name:          exercises
+version:       0.1.0.0
+license:       MIT
+copyright:     2022 Pavel Anpin
+maintainer:    pavel@anpin.fyi
+author:        Pavel Anpin
+category:      Web
+homepage:      https://anpin.fyi
 
 -- TODO: Before hackage release.
 -- A short (one-line) description of the package.
-synopsis:           A template for Haskell projects using Nix
+synopsis:      A template for Haskell projects using Nix
 
 -- A longer description of the package.
 -- description:
@@ -18,9 +18,9 @@ synopsis:           A template for Haskell projects using Nix
 -- A URL where users can report bugs.
 -- bug-reports:
 
-extra-source-files:
-  LICENSE
-  README.md
+-- extra-source-files:
+-- LICENSE
+-- README.md
 
 common shared
   ghc-options:

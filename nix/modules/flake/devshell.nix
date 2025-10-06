@@ -4,10 +4,10 @@
 {
   perSystem = { config, pkgs, system, ... }: {
     # Default shell.
-    _module.args.pkgs = import inputs.nixpkgs {
-      inherit system;
-      config = { allowUnfree = true; cudaSupport = true; };
-    };
+    # _module.args.pkgs = import inputs.nixpkgs {
+    #   inherit system;
+    #   config = { allowUnfree = true; cudaSupport = true; };
+    # };
 
     devShells.default = pkgs.mkShell {
       name = "exercises";

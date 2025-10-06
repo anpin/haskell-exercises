@@ -1,0 +1,13 @@
+diff --git a/floskell.cabal b/floskell.cabal
+index c3a536c..39a1011 100644
+--- a/floskell.cabal
++++ b/floskell.cabal
+@@ -62,7 +62,7 @@ library
+         attoparsec-aeson >=2.1.0.0 && <2.3,
+         bytestring >=0.10.8.1 && <0.13,
+         containers >=0.5.7.1 && <0.8,
+-        data-default >=0.7.1.1 && <0.8,
++        data-default >=0.7.1.1,
+         directory >=1.2.6.2 && <1.4,
+         filepath >=1.4.1.0 && <1.6,
+         haskell-src-exts >=1.19 && <1.24,

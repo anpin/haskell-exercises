@@ -14,6 +14,11 @@ repl *ARGS:
 run *ARGS:
     ghcid --command="cabal repl exe:exercises" -T ':main {{ ARGS }}' 2>&1 | cat
 
+# Run ghcid -- auto-recompile and run `main` function
+rung *ARGS:
+    ghcid --command="cabal repl exe:game-of-life" -T ':main {{ ARGS }}' 2>&1 | cat
+
+
 # Run tests
 test:
     cabal test --test-show-details=direct
