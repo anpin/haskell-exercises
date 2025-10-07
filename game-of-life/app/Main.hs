@@ -10,8 +10,6 @@
 module Main where
 
 import Data.Text as T
-import Web.Atomic.CSS
-import Web.Hyperbole.Effect.OAuth2 (AuthFlow (state))
 
 import Control.Concurrent.STM qualified as STM -- this is required to create effectfull monad in IO / main
 import Control.Lens
@@ -19,9 +17,18 @@ import Control.Monad (forM_, zipWithM_)
 import Data.Text (pack)
 import Effectful
 import Effectful.Concurrent.STM
+import Effectful.Dispatch.Dynamic (send)
 import Effectful.Labeled.State (modify)
 import Effectful.Reader.Dynamic
+import Web.Atomic.CSS
 import Web.Hyperbole as Hyperbole
+import Web.Hyperbole.Effect.Client (trigger)
+import Web.Hyperbole.Effect.Hyperbole
+import Web.Hyperbole.Effect.OAuth2 (AuthFlow (state))
+import Web.Hyperbole.HyperView (ViewAction (toAction), encodeAction)
+import Web.Hyperbole.HyperView.ViewId
+import Web.Hyperbole.Server.Socket (sendUpdateView)
+import Web.Hyperbole.Types.Event
 
 -- import Data.Foldable (forM_)
 
@@ -64,11 +71,12 @@ instance ToColor Color where
 
 data Cell = Dead | Alive Color
   -- deriving (Show, Generic, ViewId)
-  deriving (Show)
+  deriving (Show, Read, Eq, Generic, ToJSON, FromJSON, ToParam, FromParam)
 toggleCell :: Cell -> Cell
 toggleCell Dead = Alive Red
 toggleCell (Alive c) = Dead
-type GameState = [[Cell]]
+newtype GameState = GameState [[Cell]]
+  deriving (Show, Read, Eq, Generic)
 
 data GamePage = GamePage -- this is like a ViewModel binding in MVVM? Seems like it dosn't need to have an actual value
   deriving (Generic, ViewId)
@@ -76,7 +84,7 @@ data GamePage = GamePage -- this is like a ViewModel binding in MVVM? Seems like
 -- instance Default GameState where
 --   def = [[Dead | _ <- [1 .. boardSize]] | _ <- [1 .. boardSize]]
 defaultState :: GameState
-defaultState = [[Dead | _ <- [1 .. boardSize]] | _ <- [1 .. boardSize]]
+defaultState = GameState [[Dead | _ <- [1 .. boardSize]] | _ <- [1 .. boardSize]]
 
 getState :: (Concurrent :> es, Reader (TVar GameState) :> es) => Eff es GameState
 getState = readTVarIO =<< ask
@@ -89,20 +97,31 @@ modifyState f = do
     readTVar var
 
 toggleCellAt :: Int -> Int -> GameState -> GameState
-toggleCellAt x y =
+toggleCellAt x y (GameState board) =
   -- let newCell = toggleCell $ board !! x !! y
-  ix y . ix x %~ toggleCell
+  GameState $ board & ix y . ix x %~ toggleCell
+
+-- data PageActions
+--   = SyncFromServer
+--   | TapCell Int Int
 
 instance (Reader (TVar GameState) :> es, Concurrent :> es) => HyperView GamePage es where
-  data Action GamePage = TapCell Int Int
+  -- data Action GamePage = SyncFromServer GameState | TapCell Int Int
+  data Action GamePage = FetchState | TapCell Int Int
     deriving (Generic, ViewAction)
 
   update (TapCell x y) = do
     -- board <- getState -- TODO: update state
     -- pure $ cellView x y $ toggleCell $ board !! x !! y
     board <- modifyState (toggleCellAt x y)
+    -- sendUpdate board
     pure $
       boardView board
+  update FetchState = do
+    boardView <$> getState
+
+-- update (SyncFromServer st) = do
+--   pure $ boardView st
 
 cellView :: Int -> Int -> Cell -> View GamePage ()
 cellView y x cell = do
@@ -117,10 +136,19 @@ cellView y x cell = do
       Alive _ -> "O"
 
 boardView :: GameState -> View GamePage ()
-boardView state = do
-  zipWithM_
-    ( \y r ->
-        zipWithM_ (cellView y) [0 ..] r
-    )
-    [0 ..]
-    state
+boardView (GameState state) = do
+  el @ onLoad FetchState 1000 $ do
+    zipWithM_
+      ( \y r ->
+          zipWithM_ (cellView y) [0 ..] r
+      )
+      [0 ..]
+      state
+
+-- there is no way to push / broadcast updates see https://github.com/seanhess/hyperbole/issues/36
+-- sendUpdate :: (Hyperbole :> es, Reader (TVar GameState) :> es) => GameState -> Eff es ()
+-- sendUpdate st =
+--   let target = TargetViewId $ encodeViewId GamePage
+--    in do
+--         -- st <- getState -- read TVar
+--         send $ TriggerAction target $ toAction $ SyncFromServer st
