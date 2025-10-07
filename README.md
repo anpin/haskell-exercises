@@ -6,7 +6,7 @@ TODO:
 - [x] syntax comparision 
 - [x] devenv / be able to run helloworld
 - [x] simple fizzbuzz or other leet code type of problem 
-- [ ] simple full-stack crud app in Haskell 
+- [x] simple full-stack web app in Haskell 
 - [ ] simple cordana smart-contract app, e.g. flight booking
 
 Learning material: 
