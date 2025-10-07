@@ -72,7 +72,10 @@ executable game-of-life
   build-depends:
     , atomic-css
     , base        ^>=4.19.2.0
+    , effectful   ^>=2.5.1.0
     , hyperbole   >=0.5.0
+    , lens
+    , stm
     , text
 
   -- Directories containing source files.
