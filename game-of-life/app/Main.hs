@@ -13,9 +13,11 @@ import Data.Text as T
 
 import Control.Concurrent.STM qualified as STM -- this is required to create effectfull monad in IO / main
 import Control.Lens
-import Control.Monad (forM_, zipWithM_)
+import Control.Monad (forM_, forever, zipWithM_)
 import Data.Text (pack)
 import Effectful
+import Effectful.Concurrent
+import Effectful.Concurrent.Async
 import Effectful.Concurrent.STM
 import Effectful.Dispatch.Dynamic (send)
 import Effectful.Labeled.State (modify)
@@ -45,6 +47,7 @@ main :: IO ()
 main = do
   putStrLn $ "Listening on port: " <> show port
   board <- STM.newTVarIO defaultState
+  runEff $ runConcurrent $ runReader board $ startBackgroundLoop 1000
   run port $ do
     -- liveApp quickStartDocument (runPage page)
     liveApp quickStartDocument (runReader board . runConcurrent $ runPage page)
@@ -152,3 +155,14 @@ boardView (GameState state) = do
 --    in do
 --         -- st <- getState -- read TVar
 --         send $ TriggerAction target $ toAction $ SyncFromServer st
+
+gofStep :: GameState -> GameState
+gofStep (GameState board) =
+  GameState $ Prelude.map (Prelude.map (toggleCell)) board
+
+startBackgroundLoop :: (Concurrent :> es, Reader (TVar GameState) :> es) => Int -> Eff es ()
+startBackgroundLoop d = do
+  _ <- async $ forever $ do
+    _ <- modifyState gofStep
+    threadDelay d
+  pure ()
