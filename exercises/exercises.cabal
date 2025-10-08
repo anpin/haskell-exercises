@@ -69,6 +69,7 @@ library
   hs-source-dirs:  src
   exposed-modules:
     Basics
+    BasicsDsl
     CreditCard
     FibonacciStream
     FizzBuzz
