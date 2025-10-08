@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-type-defaults #-}
+
 module BasicsSpec (spec) where
 
 import Basics qualified as B
@@ -8,5 +10,5 @@ spec :: Spec
 spec = do
   describe "custom basic functions" $ do
     it "map" $ do
-      (B.mapX (+ 1) [1, 2, 3])
+      B.mapX (+ 1) [1, 2, 3]
         `shouldBe` [2, 3, 4]

@@ -1,3 +1,7 @@
+{-# OPTIONS_GHC -fno-warn-missing-deriving-strategies #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+{-# OPTIONS_GHC -fno-warn-unused-imports #-}
+
 module BasicsDsl where
 
 import Control.Monad.Except
